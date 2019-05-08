@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="defaultPadding">20dp</dimen>
+    <dimen name="defaultMargin">20dp</dimen>
+    <dimen name="smallMargin">5dp</dimen>
+    <dimen name="default_icon_width">20dp</dimen>
+    <dimen name="default_icon_height">20dp</dimen>
+</resources>
