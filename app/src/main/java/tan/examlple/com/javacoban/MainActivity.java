@@ -59,7 +59,6 @@ public class MainActivity extends AppCompatActivity implements ImageProcessingLi
         mapViews();
         initDailogWaiting();
         setOnClick();
-
     }
 
     private void mapViews() {
