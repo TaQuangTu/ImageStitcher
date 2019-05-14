@@ -14,11 +14,10 @@
         android:background="@color/colorAccent">
 
         <TextView
-
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="ĐỢI MỘT TÍ ĐỂ XỬ LÝ" />
+            android:text="Please, wait a minute!" />
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
@@ -36,7 +35,11 @@
             app:layout_constraintStart_toStartOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
-
+    <TextView
+        android:id="@+id/tvPercentage"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
     <Button
         android:id="@+id/btnStop"
         android:layout_width="match_parent"

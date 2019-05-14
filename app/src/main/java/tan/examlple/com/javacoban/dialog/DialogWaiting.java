@@ -5,12 +5,15 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
-import tan.examlple.com.javacoban.MainActivity;
 import tan.examlple.com.javacoban.R;
+import tan.examlple.com.javacoban.activity.MainActivity;
+import tan.examlple.com.javacoban.imageprocess.ImageStitcher.ProcessingListener;
 
-public class DialogWaiting extends Dialog {
+public class DialogWaiting extends Dialog implements ProcessingListener {
     Button btnStop;
+    TextView tvPercentage;
     public DialogWaiting(Context context) {
         super(context);
         this.setCancelable(false);
@@ -21,6 +24,7 @@ public class DialogWaiting extends Dialog {
     }
     private void mapViews(){
         btnStop = findViewById(R.id.btnStop);
+        tvPercentage = findViewById(R.id.tvPercentage);
     }
     private void setOnClick(){
         btnStop.setOnClickListener(new View.OnClickListener() {
@@ -30,5 +34,11 @@ public class DialogWaiting extends Dialog {
                 if(getContext() instanceof MainActivity){((MainActivity)getContext()).stopMatching();}
             }
         });
+    }
+
+    @Override
+    public int onProcess(int percentage) {
+        tvPercentage.setText(""+percentage+"%");
+        return percentage;
     }
 }

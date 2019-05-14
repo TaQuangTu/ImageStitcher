@@ -1,12 +1,12 @@
 -- Merging decision tree log ---
 manifest
-ADDED from E:\a\Documents\Android Projects\ImageStitichingTan-master\ImageStitichingTan-master\openCVLibrary343\src\main\AndroidManifest.xml:2:1-8:12
-INJECTED from E:\a\Documents\Android Projects\ImageStitichingTan-master\ImageStitichingTan-master\openCVLibrary343\src\main\AndroidManifest.xml:2:1-8:12
-INJECTED from E:\a\Documents\Android Projects\ImageStitichingTan-master\ImageStitichingTan-master\openCVLibrary343\src\main\AndroidManifest.xml:2:1-8:12
-INJECTED from E:\a\Documents\Android Projects\ImageStitichingTan-master\ImageStitichingTan-master\openCVLibrary343\src\main\AndroidManifest.xml:2:1-8:12
-INJECTED from E:\a\Documents\Android Projects\ImageStitichingTan-master\ImageStitichingTan-master\openCVLibrary343\src\main\AndroidManifest.xml:2:1-8:12
-INJECTED from E:\a\Documents\Android Projects\ImageStitichingTan-master\ImageStitichingTan-master\openCVLibrary343\src\main\AndroidManifest.xml:2:1-8:12
-INJECTED from E:\a\Documents\Android Projects\ImageStitichingTan-master\ImageStitichingTan-master\openCVLibrary343\src\main\AndroidManifest.xml:2:1-8:12
+ADDED from E:\a\Documents\Android Projects\ImageStitichingTan-master\ImageStitichingTan-master\openCVLibrary343\src\main\AndroidManifest.xml:2:1-7:12
+INJECTED from E:\a\Documents\Android Projects\ImageStitichingTan-master\ImageStitichingTan-master\openCVLibrary343\src\main\AndroidManifest.xml:2:1-7:12
+INJECTED from E:\a\Documents\Android Projects\ImageStitichingTan-master\ImageStitichingTan-master\openCVLibrary343\src\main\AndroidManifest.xml:2:1-7:12
+INJECTED from E:\a\Documents\Android Projects\ImageStitichingTan-master\ImageStitichingTan-master\openCVLibrary343\src\main\AndroidManifest.xml:2:1-7:12
+INJECTED from E:\a\Documents\Android Projects\ImageStitichingTan-master\ImageStitichingTan-master\openCVLibrary343\src\main\AndroidManifest.xml:2:1-7:12
+INJECTED from E:\a\Documents\Android Projects\ImageStitichingTan-master\ImageStitichingTan-master\openCVLibrary343\src\main\AndroidManifest.xml:2:1-7:12
+INJECTED from E:\a\Documents\Android Projects\ImageStitichingTan-master\ImageStitichingTan-master\openCVLibrary343\src\main\AndroidManifest.xml:2:1-7:12
 	package
 		ADDED from E:\a\Documents\Android Projects\ImageStitichingTan-master\ImageStitichingTan-master\openCVLibrary343\src\main\AndroidManifest.xml:3:7-27
 		INJECTED from E:\a\Documents\Android Projects\ImageStitichingTan-master\ImageStitichingTan-master\openCVLibrary343\src\main\AndroidManifest.xml
@@ -22,16 +22,16 @@ INJECTED from E:\a\Documents\Android Projects\ImageStitichingTan-master\ImageSti
 		INJECTED from E:\a\Documents\Android Projects\ImageStitichingTan-master\ImageStitichingTan-master\openCVLibrary343\src\main\AndroidManifest.xml
 		INJECTED from E:\a\Documents\Android Projects\ImageStitichingTan-master\ImageStitichingTan-master\openCVLibrary343\src\main\AndroidManifest.xml
 uses-sdk
-ADDED from E:\a\Documents\Android Projects\ImageStitichingTan-master\ImageStitichingTan-master\openCVLibrary343\src\main\AndroidManifest.xml:7:5-47
-INJECTED from E:\a\Documents\Android Projects\ImageStitichingTan-master\ImageStitichingTan-master\openCVLibrary343\src\main\AndroidManifest.xml:7:5-47
-INJECTED from E:\a\Documents\Android Projects\ImageStitichingTan-master\ImageStitichingTan-master\openCVLibrary343\src\main\AndroidManifest.xml:7:5-47
-INJECTED from E:\a\Documents\Android Projects\ImageStitichingTan-master\ImageStitichingTan-master\openCVLibrary343\src\main\AndroidManifest.xml:7:5-47
-INJECTED from E:\a\Documents\Android Projects\ImageStitichingTan-master\ImageStitichingTan-master\openCVLibrary343\src\main\AndroidManifest.xml:7:5-47
+INJECTED from E:\a\Documents\Android Projects\ImageStitichingTan-master\ImageStitichingTan-master\openCVLibrary343\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from E:\a\Documents\Android Projects\ImageStitichingTan-master\ImageStitichingTan-master\openCVLibrary343\src\main\AndroidManifest.xml
+INJECTED from E:\a\Documents\Android Projects\ImageStitichingTan-master\ImageStitichingTan-master\openCVLibrary343\src\main\AndroidManifest.xml
+INJECTED from E:\a\Documents\Android Projects\ImageStitichingTan-master\ImageStitichingTan-master\openCVLibrary343\src\main\AndroidManifest.xml
+INJECTED from E:\a\Documents\Android Projects\ImageStitichingTan-master\ImageStitichingTan-master\openCVLibrary343\src\main\AndroidManifest.xml
 	android:targetSdkVersion
-		ADDED from E:\a\Documents\Android Projects\ImageStitichingTan-master\ImageStitichingTan-master\openCVLibrary343\src\main\AndroidManifest.xml:7:15-44
 		INJECTED from E:\a\Documents\Android Projects\ImageStitichingTan-master\ImageStitichingTan-master\openCVLibrary343\src\main\AndroidManifest.xml
+		ADDED from E:\a\Documents\Android Projects\ImageStitichingTan-master\ImageStitichingTan-master\openCVLibrary343\src\main\AndroidManifest.xml
 		INJECTED from E:\a\Documents\Android Projects\ImageStitichingTan-master\ImageStitichingTan-master\openCVLibrary343\src\main\AndroidManifest.xml
 	android:minSdkVersion
 		INJECTED from E:\a\Documents\Android Projects\ImageStitichingTan-master\ImageStitichingTan-master\openCVLibrary343\src\main\AndroidManifest.xml
-		ADDED from E:\a\Documents\Android Projects\ImageStitichingTan-master\ImageStitichingTan-master\openCVLibrary343\src\main\AndroidManifest.xml:7:5-47
+		ADDED from E:\a\Documents\Android Projects\ImageStitichingTan-master\ImageStitichingTan-master\openCVLibrary343\src\main\AndroidManifest.xml
 		INJECTED from E:\a\Documents\Android Projects\ImageStitichingTan-master\ImageStitichingTan-master\openCVLibrary343\src\main\AndroidManifest.xml

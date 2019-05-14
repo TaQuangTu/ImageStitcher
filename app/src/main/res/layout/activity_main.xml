@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    android:keepScreenOn="true"
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
     android:padding="@dimen/defaultPadding">
+
+    <ProgressBar
+        android:id="@+id/progressBarWaiting"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/cstImageContainer"
@@ -57,10 +65,10 @@
             android:layout_marginTop="20dp"
             android:layout_marginEnd="@dimen/smallMargin"
             android:layout_marginRight="@dimen/smallMargin"
+            android:scaleType="centerInside"
             android:src="@drawable/ic_default_image"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </android.support.constraint.ConstraintLayout>
 
@@ -71,15 +79,16 @@
         android:gravity="center"
         android:text="Stitch"
         app:layout_constraintBottom_toTopOf="@id/btnBack"
-        app:layout_constraintTop_toBottomOf="@+id/cstImageContainer" />
+        app:layout_constraintTop_toBottomOf="@+id/cstResultContainer" />
 
     <Button
         android:id="@+id/btnBack"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/defaultMargin"
+        android:layout_height="50dp"
+        android:layout_margin="@dimen/defaultMargin"
         android:text="BACK"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btnStitch" />
 </android.support.constraint.ConstraintLayout>
+

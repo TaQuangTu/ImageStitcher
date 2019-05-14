@@ -4,16 +4,20 @@ import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.widget.ImageView;
 
+import static tan.examlple.com.javacoban.imageprocess.ImageStitcher.*;
+
 public class ImageProcessThread extends AsyncTask<ImageView,ImageView,Bitmap> {
 
     private ImageProcessingListener imageProcessingListener;
+    private ProcessingListener percentageListener;
     public interface ImageProcessingListener
     {
          void setUIAfterRun(Bitmap result);
          void setUIBeforeRun();
     }
-    public ImageProcessThread(ImageProcessingListener imageProcessingListener){
+    public ImageProcessThread(ImageProcessingListener imageProcessingListener, ProcessingListener percentageListener){
         this.imageProcessingListener = imageProcessingListener;
+        this.percentageListener = percentageListener;
     }
     @Override
     protected void onPreExecute() {
@@ -24,7 +28,9 @@ public class ImageProcessThread extends AsyncTask<ImageView,ImageView,Bitmap> {
         //get two image in parameters
         ImageView imv1 = imageViews[0];
         ImageView imv2 = imageViews[1];
-        Bitmap result = ImageStitcher.getInstance().stitch(imv1,imv2);
+        ImageStitcher imageStitcher = getInstance();
+        imageStitcher.setPersentageListener(percentageListener);
+        Bitmap result = getInstance().stitch(imv1,imv2);
         return result;
     }
     @Override
