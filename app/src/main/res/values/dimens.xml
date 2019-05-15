@@ -2,7 +2,16 @@
 <resources>
     <dimen name="defaultPadding">20dp</dimen>
     <dimen name="defaultMargin">20dp</dimen>
+    <dimen name="default_icon_width">32dp</dimen>
+    <dimen name="default_icon_height">32dp</dimen>
+    <dimen name="bigMargin">50dp</dimen>
+    <dimen name="smallIconHeight">12dp</dimen>
     <dimen name="smallMargin">5dp</dimen>
-    <dimen name="default_icon_width">20dp</dimen>
-    <dimen name="default_icon_height">20dp</dimen>
+    <dimen name="defaultRadius">10dp</dimen>
+    <dimen name="height_horizontal_list_fragment">300dp</dimen>
+    <dimen name="image_width">220dp</dimen>
+    <dimen name="image_height">300dp</dimen>
+    <dimen name="big_icon_height">48dp</dimen>
+    <dimen name="big_icon_width">48dp</dimen>
+    <dimen name="width_stroke">3dp</dimen>
 </resources>

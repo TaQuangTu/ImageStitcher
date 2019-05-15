@@ -29,6 +29,7 @@ public class ImageStitcher {
     private ProcessingListener listener;
     public void setPersentageListener(ProcessingListener processingListener){
         this.listener = processingListener;
+
     }
     private static String TAG = "ImageSticher";
     private static ImageStitcher imageStitcher;
@@ -59,14 +60,14 @@ public class ImageStitcher {
         Bitmap resizedBitmap = Bitmap.createScaledBitmap(bitmap,(int)(bitmap.getWidth()*0.8),(int)(bitmap.getHeight()*0.8),true);
         return resizedBitmap;
     }
-    private Mat getMat(ImageView image) {
+    private Mat getMat(Bitmap image) {
         Mat mat = new Mat();
-        Utils.bitmapToMat(getBitmap(image), mat);
+        Utils.bitmapToMat(image, mat);
         return mat;
     }
 
 
-    public Bitmap stitch(ImageView imv1, ImageView imv2) {
+    public Bitmap stitch(Bitmap imv1, Bitmap imv2) {
 
         //Step 1: create ORB feature detector, ORB descriptor extractor, descriptor matcher
         DescriptorMatcher matcher = DescriptorMatcher.create(DescriptorMatcher.BRUTEFORCE_HAMMING);
@@ -146,11 +147,11 @@ public class ImageStitcher {
         */
         //stitch images
 
-        Bitmap res = getBitmap(imv2); //default value for result
+        Bitmap res =imv2; //default value for result
         if (homography == null || homography.height() < 3 || homography.width() < 3) {
             Log.d(TAG, "stitch: can not stitch the images");
         } else { //stitch
-            res = stitchThroughHomography(getBitmap(imv1), getBitmap(imv2), homography);
+            res = stitchThroughHomography(imv1, imv2, homography);
             return res;
         }
         //TODO: return new bitmap that matched from two the image
@@ -168,8 +169,8 @@ public class ImageStitcher {
         int minX = 99999999, minY =9999999;
         int maxX = -1, maxY = -1;
         int percentage = 70;
-        final int DETAL_Y = 1000, MAX_HEIGHT = 10000;
-        final int DETAL_X = 1000, MAX_WIDTH = 10000;
+        final int DETAL_Y = 1000, MAX_HEIGHT = 8000;
+        final int DETAL_X = 1000, MAX_WIDTH = 8000;
         //create a bitmap that big enough
         Bitmap res = Bitmap.createBitmap(MAX_WIDTH, MAX_HEIGHT, Bitmap.Config.ARGB_8888);
         //first, copy bitmap1

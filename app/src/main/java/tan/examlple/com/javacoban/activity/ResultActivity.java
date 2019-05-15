@@ -1,14 +1,19 @@
 package tan.examlple.com.javacoban.activity;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.github.chrisbanes.photoview.PhotoView;
 
@@ -21,10 +26,15 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import tan.examlple.com.javacoban.R;
+import tan.examlple.com.javacoban.permission.RuntimePermissionHelper;
 
 public class ResultActivity extends AppCompatActivity {
+    private static final int REQUEST_CODE_PERMISSION_WRITE_EXTERNAL = 0;
+    private static final int REQUEST_CODE_PERMISSION_READ_EXTERNAL = 1;
     PhotoView photoView;
     Button btnBack, btnSave;
+    RuntimePermissionHelper permissionHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,14 +42,18 @@ public class ResultActivity extends AppCompatActivity {
         mapViews();
         setImageViewFromIntent();
         setOnViewClick();
+
+        //init permission helper
+        permissionHelper = new RuntimePermissionHelper(this);
     }
-    protected void mapViews(){
-        photoView= findViewById(R.id.photoViewResult);
+
+    protected void mapViews() {
+        photoView = findViewById(R.id.photoViewResult);
         btnBack = findViewById(R.id.btnBack);
         btnSave = findViewById(R.id.btnSave);
     }
-    private void setImageViewFromIntent()
-    {
+
+    private void setImageViewFromIntent() {
         Bitmap bmp = null;
         String filename = getIntent().getStringExtra("image");
         try {
@@ -51,11 +65,23 @@ public class ResultActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-    private void setOnViewClick(){
+
+    private void setOnViewClick() {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                storeImage(((BitmapDrawable)photoView.getDrawable()).getBitmap());
+                if(Build.VERSION.SDK_INT<23){
+                    //just do work without checking permission
+                    storeImage(((BitmapDrawable) photoView.getDrawable()).getBitmap());
+                    return;
+                }
+                //if android version is greater than 22
+                if (permissionHelper.permissionAlreadyGranted(Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                        storeImage(((BitmapDrawable) photoView.getDrawable()).getBitmap());
+                } else {
+                    permissionHelper.requestPermisstion(Manifest.permission.READ_EXTERNAL_STORAGE, REQUEST_CODE_PERMISSION_READ_EXTERNAL);
+                }
+
             }
         });
         btnBack.setOnClickListener(new View.OnClickListener() {
@@ -65,28 +91,34 @@ public class ResultActivity extends AppCompatActivity {
             }
         });
     }
+
     private void storeImage(Bitmap image) {
         File pictureFile = getOutputMediaFile();
         if (pictureFile == null) {
-            Log.d("TEST",
-                    "Error creating media file, check storage permissions: ");// e.getMessage());
+            Toast.makeText(this, "Saving fails", Toast.LENGTH_SHORT).show();
             return;
         }
         try {
             FileOutputStream fos = new FileOutputStream(pictureFile);
             image.compress(Bitmap.CompressFormat.PNG, 90, fos);
+            Toast.makeText(this, "Saved successfully", Toast.LENGTH_SHORT).show();
             fos.close();
         } catch (FileNotFoundException e) {
-            Log.d("TEST", "File not found: " + e.getMessage());
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         } catch (IOException e) {
-            Log.d("TEST", "Error accessing file: " + e.getMessage());
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
-    /** Create a File for saving an image or video */
-    private  File getOutputMediaFile(){
+
+    /**
+     * Create a File for saving an image or video
+     */
+    private File getOutputMediaFile() {
         // To be safe, you should check that the SDCard is mounted
         // using Environment.getExternalStorageState() before doing this.
-        File mediaStorageDir = new File(Environment.getExternalStorageDirectory()
+
+        Log.d("ac", "getOutputMediaFile: "+Environment.getExternalStorageState());
+        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
                 + "ImageSticher"
                 + "/Images");
 
@@ -94,16 +126,30 @@ public class ResultActivity extends AppCompatActivity {
         // between applications and persist after your app has been uninstalled.
 
         // Create the storage directory if it does not exist
-        if (! mediaStorageDir.exists()){
-            if (! mediaStorageDir.mkdirs()){
+        if (!mediaStorageDir.exists()) {
+            if (!mediaStorageDir.mkdirs()) {
                 return null;
             }
         }
         // Create a media file name
         String timeStamp = new SimpleDateFormat("ddMMyyyy_HHmm").format(new Date());
         File mediaFile;
-        String mImageName="MI_"+ timeStamp +".jpg";
+        String mImageName = "MI_" + timeStamp + ".jpg";
         mediaFile = new File(mediaStorageDir.getPath() + File.separator + mImageName);
         return mediaFile;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_CODE_PERMISSION_READ_EXTERNAL) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                //continue working
+                btnSave.performClick();
+            } else {
+                //permission denied
+
+            }
+        }
     }
 }
