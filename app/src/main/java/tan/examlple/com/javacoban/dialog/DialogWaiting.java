@@ -9,9 +9,10 @@ import android.widget.TextView;
 
 import tan.examlple.com.javacoban.R;
 import tan.examlple.com.javacoban.activity.MainActivity;
-import tan.examlple.com.javacoban.imageprocess.ImageStitcher.ProcessingListener;
 
-public class DialogWaiting extends Dialog implements ProcessingListener {
+import static tan.examlple.com.javacoban.imageprocess.ImageStitcher.PercentageListener;
+
+public class DialogWaiting extends Dialog implements PercentageListener {
     Button btnStop;
     TextView tvPercentage;
 
@@ -42,21 +43,13 @@ public class DialogWaiting extends Dialog implements ProcessingListener {
     }
 
     @Override
-    public int onProcess(final int percentage) {
-
+    public int onPercentageChange(final int percentage) {
         tvPercentage.post(new Runnable() {
             @Override
             public void run() {
                 tvPercentage.setText("" + percentage + "%");
             }
         });
-
-       /* getOwnerActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                tvPercentage.setText("" + percentage + "%");
-            }
-        });*/
         return percentage;
     }
 }

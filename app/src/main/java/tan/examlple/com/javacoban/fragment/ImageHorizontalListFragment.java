@@ -104,4 +104,9 @@ public class ImageHorizontalListFragment extends Fragment {
     public ArrayList<Bitmap> getBitmapArray() {
         return this.bitmapArrayList;
     }
+    public void clearBitmapArrays(){
+        this.bitmapArrayList.clear();
+        this.bitmapArrayList.add(defaultBitmap);
+        imageHorizontalListAdapter.notifyDataSetChanged();
+    }
 }

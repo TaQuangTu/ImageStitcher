@@ -37,13 +37,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <ImageView
-            android:layout_margin="@dimen/defaultMargin"
-            android:layout_weight="1"
-            android:background="@drawable/ic_add_image"
-            android:scaleType="center"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" />
-        <ImageView
+            android:id="@+id/imvCamera"
+            android:scaleType="fitCenter"
             android:src="@drawable/ic_camera"
             android:layout_margin="@dimen/defaultMargin"
             android:layout_weight="1"

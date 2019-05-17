@@ -10,21 +10,24 @@ import static tan.examlple.com.javacoban.imageprocess.ImageStitcher.*;
 
 public class ImageProcessThread extends AsyncTask<Void,ImageView,Bitmap> {
 
+    public interface ImageProcessingListener
+    {
+        void setUIAfterRun(Bitmap result);
+        void setUIBeforeRun();
+    }
+
     private ImageProcessingListener imageProcessingListener;
-    private ProcessingListener percentageListener;
     private ArrayList<Bitmap> bitmapArrayList;
+    private PercentageListener mPercentageListener;
+
+
     public void setDataBeforeRun(ArrayList<Bitmap> bitmapArray) {
         bitmapArrayList = bitmapArray;
     }
+    public void setmPercentageListener(PercentageListener percentageListener){this.mPercentageListener = percentageListener;}
 
-    public interface ImageProcessingListener
-    {
-         void setUIAfterRun(Bitmap result);
-         void setUIBeforeRun();
-    }
-    public ImageProcessThread(ImageProcessingListener imageProcessingListener, ProcessingListener percentageListener){
+    public ImageProcessThread(ImageProcessingListener imageProcessingListener){
         this.imageProcessingListener = imageProcessingListener;
-        this.percentageListener = percentageListener;
     }
     @Override
     protected void onPreExecute() {
@@ -33,14 +36,9 @@ public class ImageProcessThread extends AsyncTask<Void,ImageView,Bitmap> {
     @Override
     protected Bitmap doInBackground(Void... voids) {
         ImageStitcher imageStitcher = getInstance();
-        imageStitcher.setPersentageListener(percentageListener);
+        imageStitcher.setPercentageListener(mPercentageListener);
         //stitch two first bitmap
-        Bitmap result = imageStitcher.stitch(bitmapArrayList.get(0),bitmapArrayList.get(1));
-        //stitch all except last image cause it is just an image insertion icon
-        for(int i=2;i<bitmapArrayList.size()-1;i++){
-            result = imageStitcher.stitch(result,bitmapArrayList.get(i));
-        }
-        
+        Bitmap result = imageStitcher.stichMultipleBitmap(bitmapArrayList);
         return result;
     }
     @Override

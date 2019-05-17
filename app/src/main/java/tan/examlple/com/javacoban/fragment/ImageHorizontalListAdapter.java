@@ -52,7 +52,7 @@ public class ImageHorizontalListAdapter extends RecyclerView.Adapter<ImageHorizo
 
     @Override
     public void onBindViewHolder(@NonNull ImageViewHolder imageViewHolder, int i) {
-        Bitmap bitmap = bitmapArrayList.get(i);
+        final Bitmap bitmap = bitmapArrayList.get(i);
 
         //create a scaled bitmap just for display
         int displayWidth = (int)(bitmap.getWidth()*0.7);
@@ -82,7 +82,17 @@ public class ImageHorizontalListAdapter extends RecyclerView.Adapter<ImageHorizo
             @Override
             public void onClick(View v) {
                 if(context instanceof MainActivity){
-                    ((MainActivity)context).chooseMutipleImageFromGallery();
+                    MainActivity mainActivity = (MainActivity)context;
+                    if(position==bitmapArrayList.size()-1){
+                        Bitmap defaultBitmap = bitmapArrayList.get(position);
+                        bitmapArrayList.clear();
+                        bitmapArrayList.add(defaultBitmap);
+                        notifyDataSetChanged();
+                        mainActivity.chooseMutipleImageFromGallery();
+                    }
+                    else{
+                        mainActivity.chooseImageFromGallery(position);
+                    }
                 }
             }
         });
@@ -92,5 +102,4 @@ public class ImageHorizontalListAdapter extends RecyclerView.Adapter<ImageHorizo
     public int getItemCount() {
         return bitmapArrayList.size();
     }
-
 }

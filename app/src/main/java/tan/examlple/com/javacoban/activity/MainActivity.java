@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
@@ -25,11 +26,14 @@ import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
 
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import tan.examlple.com.javacoban.R;
+import tan.examlple.com.javacoban.camera.CameraRequestHelper;
 import tan.examlple.com.javacoban.dialog.DialogWaiting;
 import tan.examlple.com.javacoban.fragment.ImageHorizontalListFragment;
 import tan.examlple.com.javacoban.imageprocess.ImageProcessThread;
@@ -39,27 +43,21 @@ import tan.examlple.com.javacoban.permission.RuntimePermissionHelper;
 public class MainActivity extends AppCompatActivity implements ImageProcessingListener {
 
     private static final int PICK_IMAGE_MULTIPLE = 2222;
-    private static int PICK_IMAGE = 1;
     private static int REQUEST_CAMERA = 2000;
     private static int REQUEST_WRITE_EXTERNAL_STORAGE = 3000;
     private static int REQUEST_READ_EXTERNAL_STORAGE = 4000;
-    private static int TAKE_IMAGE1 = 1;
-    private static int TAKE_IMAGE2 = 2;
-
-
-    public static String STR_BITMAP_RESULT = "BITMAP_RESULT";
-    public static String STR_BUNDLE = "BUNDLE";
-
+    private static int REQUEST_TAKE_IMAGE1_FROM_CAMERA = 11;
+    private static int REQUEST_TAKE_IMAGE2_FROM_CAMERA = 12;
+    private String pathOfImage1, pathOfImage2;
 
     private DialogWaiting dialogWaiting;
     private Button btnStitch, btnBack;
-    private ImageView imvResult;
+    private ImageView imvResult, imvCamera;
     private ImageProcessThread processThread;
     private ProgressBar progressBar;
     private ConstraintLayout cstImageContainer;
     private ConstraintLayout cstResultContainer;
     private LinearLayout lnCameraContainer;
-
     private ImageHorizontalListFragment horizontalListFragment;
 
 
@@ -69,9 +67,9 @@ public class MainActivity extends AppCompatActivity implements ImageProcessingLi
             switch (status) {
                 case LoaderCallbackInterface.SUCCESS: {
                     //TODO: openCV code goes there
-                    processThread = new ImageProcessThread(MainActivity.this, dialogWaiting);
-                    //TODO: wrap all images
+                    processThread = new ImageProcessThread(MainActivity.this);
                     processThread.setDataBeforeRun(horizontalListFragment.getBitmapArray());
+                    processThread.setmPercentageListener(dialogWaiting);
                     processThread.execute();
                     Log.i("OpenCV", "OpenCV loaded successfully");
                 }
@@ -94,6 +92,7 @@ public class MainActivity extends AppCompatActivity implements ImageProcessingLi
     }
 
     private void mapViews() {
+        imvCamera = findViewById(R.id.imvCamera);
         btnStitch = findViewById(R.id.btnStitch);
         btnBack = findViewById(R.id.btnBack);
         imvResult = findViewById(R.id.imvResult);
@@ -131,28 +130,42 @@ public class MainActivity extends AppCompatActivity implements ImageProcessingLi
         imvResult.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              /*  progressBar.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.VISIBLE);
                 cstResultContainer.setVisibility(View.GONE);
-                btnBack.setVisibility(View.GONE);*/
-                Bitmap bitmapResult = ((BitmapDrawable) imvResult.getDrawable()).getBitmap();
+                btnBack.setVisibility(View.GONE);
 
-                try {
-                    //Write file
-                    String filename = "bitmap.png";
-                    FileOutputStream stream = MainActivity.this.openFileOutput(filename, Context.MODE_PRIVATE);
-                    bitmapResult.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                //create new thread to storage image and get its filename back
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Bitmap bitmapResult = ((BitmapDrawable) imvResult.getDrawable()).getBitmap();
+                        try {
+                            //Write file
+                            final String filename = "bitmap.png";
+                            FileOutputStream stream = MainActivity.this.openFileOutput(filename, Context.MODE_PRIVATE);
+                            bitmapResult.compress(Bitmap.CompressFormat.PNG, 100, stream);
 
-                    //Cleanup
-                    stream.close();
-                    bitmapResult.recycle();
+                            //Cleanup
+                            stream.close();
+                            bitmapResult.recycle();
 
-                    //Pop intent
-                    Intent in1 = new Intent(MainActivity.this, ResultActivity.class);
-                    in1.putExtra("image", filename);
-                    startActivity(in1);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                            //after having saved the bitmap, start new activity
+                            Intent in1 = new Intent(MainActivity.this, ResultActivity.class);
+                            in1.putExtra("image", filename);
+                            startActivity(in1);
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
+            }
+        });
+        imvCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                horizontalListFragment.clearBitmapArrays();
+                pathOfImage1 = CameraRequestHelper.openCamera(MainActivity.this, REQUEST_TAKE_IMAGE1_FROM_CAMERA);
             }
         });
     }
@@ -190,21 +203,47 @@ public class MainActivity extends AppCompatActivity implements ImageProcessingLi
         intent.setType("image/*");
         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_MULTIPLE);
+        startActivityForResult(Intent.createChooser(intent, "Select multiple picture"), PICK_IMAGE_MULTIPLE);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
-            if (requestCode == TAKE_IMAGE1) {
-
+            //it is a code request for replace image, it's also the position of recycler view
+            if (requestCode != PICK_IMAGE_MULTIPLE && requestCode != REQUEST_TAKE_IMAGE1_FROM_CAMERA && requestCode != REQUEST_TAKE_IMAGE2_FROM_CAMERA) {
+                final Uri imageUri = data.getData();
+                final InputStream imageStream;
+                try {
+                    imageStream = getContentResolver().openInputStream(imageUri);
+                    final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+                    this.horizontalListFragment.addBitmap(selectedImage, requestCode);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
             }
-            if (requestCode == TAKE_IMAGE2) {
-
+            //if result come from camera
+            else if (requestCode == REQUEST_TAKE_IMAGE1_FROM_CAMERA || requestCode == REQUEST_TAKE_IMAGE2_FROM_CAMERA) {
+                if (requestCode == REQUEST_TAKE_IMAGE1_FROM_CAMERA) {
+                    if (pathOfImage1 != null) {
+                        Log.d("ssss", "onActivityResult: image1 not null");
+                        final Bitmap bitmap1 = BitmapFactory.decodeFile(pathOfImage1);
+                        horizontalListFragment.addBitmap(bitmap1, 0);
+                        Log.d("ssss", "onActivityResult: image1 added");
+                        pathOfImage2 = CameraRequestHelper.openCamera(MainActivity.this, REQUEST_TAKE_IMAGE2_FROM_CAMERA);
+                    }
+                } else if (requestCode == REQUEST_TAKE_IMAGE2_FROM_CAMERA) {
+                    if (pathOfImage2 != null) {
+                        Log.d("ssss", "onActivityResult: image2 not null");
+                        final Bitmap bitmap2 = BitmapFactory.decodeFile(pathOfImage2);
+                        horizontalListFragment.addBitmap(bitmap2, 1);
+                        Log.d("ssss", "onActivityResult: image2 added");
+                    }
+                }
             }
+            //if images come from gallery
             if (requestCode == PICK_IMAGE_MULTIPLE) {
                 String[] filePathColumn = {MediaStore.Images.Media.DATA};
-                ArrayList<String> imagesEncodedList = new ArrayList<String>();
+                ArrayList<String> imagesEncodedList = new ArrayList<>();
                 if (data.getData() != null) {
 
                     Uri mImageUri = data.getData();
@@ -216,7 +255,7 @@ public class MainActivity extends AppCompatActivity implements ImageProcessingLi
                     cursor.moveToFirst();
                     cursor.close();
 
-                    ArrayList<Uri> mArrayUri = new ArrayList<Uri>();
+                    ArrayList<Uri> mArrayUri = new ArrayList<>();
                     mArrayUri.add(mImageUri);
                     for (int i = 0; i < mArrayUri.size(); i++) {
                         try {
@@ -230,7 +269,7 @@ public class MainActivity extends AppCompatActivity implements ImageProcessingLi
                 } else {
                     if (data.getClipData() != null) {
                         ClipData mClipData = data.getClipData();
-                        ArrayList<Uri> mArrayUri = new ArrayList<Uri>();
+                        ArrayList<Uri> mArrayUri = new ArrayList<>();
                         for (int i = 0; i < mClipData.getItemCount(); i++) {
 
                             ClipData.Item item = mClipData.getItemAt(i);
@@ -268,8 +307,8 @@ public class MainActivity extends AppCompatActivity implements ImageProcessingLi
         super.onResume();
         btnStitch.setVisibility(View.VISIBLE);
         cstImageContainer.setVisibility(View.VISIBLE);
-
         cstResultContainer.setVisibility(View.GONE);
+        lnCameraContainer.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.GONE);
         btnBack.setVisibility(View.GONE);
 
@@ -287,6 +326,7 @@ public class MainActivity extends AppCompatActivity implements ImageProcessingLi
         cstImageContainer.setVisibility(View.VISIBLE);
         cstResultContainer.setVisibility(View.GONE);
         lnCameraContainer.setVisibility(View.VISIBLE);
+        imvCamera.setVisibility(View.VISIBLE);
     }
 
     public void stopMatching() {
@@ -299,11 +339,6 @@ public class MainActivity extends AppCompatActivity implements ImageProcessingLi
             return;
         }
         int numberOfAcceptedPermission = 0;
-        if (permissionHelper.permissionAlreadyGranted(Manifest.permission.READ_EXTERNAL_STORAGE) == false) {
-            permissionHelper.requestPermisstion(Manifest.permission.READ_EXTERNAL_STORAGE, REQUEST_READ_EXTERNAL_STORAGE);
-        } else {
-            numberOfAcceptedPermission++;
-        }
         if (permissionHelper.permissionAlreadyGranted(Manifest.permission.WRITE_EXTERNAL_STORAGE) == false) {
             permissionHelper.requestPermisstion(Manifest.permission.WRITE_EXTERNAL_STORAGE, REQUEST_WRITE_EXTERNAL_STORAGE);
         } else {
@@ -315,7 +350,6 @@ public class MainActivity extends AppCompatActivity implements ImageProcessingLi
             numberOfAcceptedPermission++;
         }
         //continue request if one of the permission is not accepted, this a hack :))
-        if (numberOfAcceptedPermission < 3) requestAllNeededPermissions();
+        if (numberOfAcceptedPermission < 2) requestAllNeededPermissions();
     }
-
 }
