@@ -3,4 +3,14 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="introduction">INTRODUCTION</string>
+    <string name="stitch_images_from_gallery">STITCH IMAGES FROM GALLERY</string>
+    <string name="introduce_body">This is an app for stitching images that have similar areas to a larger image (Panorama image). This app works well in case images that to be stitched are fragments of an origin image, it is also works well in case objects in the images have the same plane. You have two ways to make panorama images from this app. The first one is picking multiple images from gallery and stitch them together. The second one is taking image from your device camera. Of course, this app is still getting some drawbacks cause the internal algorithm implemented inside it. Therefor, we recommend you to stitch for 2 or 3 images at most to get good result and not that, maximum number of stitched images is set to 2 if you want to take photos from your device camera.</string>
+    <string name="stitch_from_gallery_body">In order to stitch images from gallery, click the empty image icon on main screen and choose multiple images that you want to stitch. Note that the chosen images should have similar areas and number of images should be less than 4. If not, we could not guarantee a good reason for you.</string>
+    <string name="stitch_image_from_camera">STITCH IMAGES TAKEN FROM CAMERA</string>
+    <string name="stitch_image_from_camera_body">Click to the black camera icon at bottom of your screen and take two photos (you have to take two 2 photos at least and at most, please read introduction to know its reason).</string>
+    <string name="photo_storage">PHOTO STORAGE</string>
+    <string name="photo_storage_body"><![CDATA[It is an inconvenience in this app. All result (panorama images stitched from other images) will not be display when you browse your gallery. To get the results, you must get in device internal storage -> Android -> data -> ImageSticher -> Files. Photo format is only JPG.]]></string>
+    <string name="for_contribution">FOR CONTRIBUTION</string>
+    <string name="for_contribution_body">Visit source code of this app, https://github.com/TaQuangTu/ImageStitcher. Improve it if you are interested in!</string>
 </resources>

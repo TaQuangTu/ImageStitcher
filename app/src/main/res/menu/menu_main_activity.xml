@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+   <item
+       android:icon="@android:drawable/ic_menu_help"
+       android:id="@+id/menu_item_help"
+       android:title="Help" />
+    <item
+        android:icon="@android:drawable/ic_menu_gallery"
+        android:id="@+id/menu_item_stiched_images"
+        android:title="Stitched Images" />
+    <item
+        android:title="Contact" >
+        <menu>
+            <item
+                android:icon="@android:drawable/sym_action_email"
+                android:title="taquangtu132@gmail.com"
+                android:id="@+id/menu_item_email"></item>
+        </menu>
+    </item>
+</menu>

@@ -15,6 +15,9 @@ import android.provider.MediaStore;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -329,6 +332,29 @@ public class MainActivity extends AppCompatActivity implements ImageProcessingLi
         imvCamera.setVisibility(View.VISIBLE);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main_activity,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemMenuId = item.getItemId();
+        if(itemMenuId==R.id.menu_item_help){
+            Intent intentNewActivity = new Intent(this,HelpActivity.class);
+            startActivity(intentNewActivity);
+        }
+        if(itemMenuId==R.id.menu_item_stiched_images){
+            Toast.makeText(this, "Go to: Internal Storage -> Android -> data -> ImageSticher -> Files", Toast.LENGTH_SHORT).show();
+        }
+        if(itemMenuId==R.id.menu_item_email){
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     public void stopMatching() {
         processThread.cancel(false);
     }
@@ -338,18 +364,11 @@ public class MainActivity extends AppCompatActivity implements ImageProcessingLi
         if (Build.VERSION.SDK_INT < 23) {
             return;
         }
-        int numberOfAcceptedPermission = 0;
         if (permissionHelper.permissionAlreadyGranted(Manifest.permission.WRITE_EXTERNAL_STORAGE) == false) {
             permissionHelper.requestPermisstion(Manifest.permission.WRITE_EXTERNAL_STORAGE, REQUEST_WRITE_EXTERNAL_STORAGE);
-        } else {
-            numberOfAcceptedPermission++;
         }
         if (permissionHelper.permissionAlreadyGranted(Manifest.permission.CAMERA) == false) {
             permissionHelper.requestPermisstion(Manifest.permission.CAMERA, REQUEST_CAMERA);
-        } else {
-            numberOfAcceptedPermission++;
         }
-        //continue request if one of the permission is not accepted, this a hack :))
-        if (numberOfAcceptedPermission < 2) requestAllNeededPermissions();
     }
 }

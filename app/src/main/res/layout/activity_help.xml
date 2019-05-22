@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@color/colorWhite"
+    android:layout_height="wrap_content">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="@dimen/defaultPadding">
+
+        <tan.examlple.com.javacoban.textviews.TitleTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/introduction"
+            android:textStyle="bold" />
+
+        <tan.examlple.com.javacoban.textviews.BodyTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/defaultMargin"
+            android:text="@string/introduce_body" />
+
+        <tan.examlple.com.javacoban.textviews.TitleTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/defaultMargin"
+            android:text="@string/stitch_images_from_gallery"
+            android:textStyle="bold" />
+
+        <tan.examlple.com.javacoban.textviews.BodyTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/defaultMargin"
+            android:text="@string/stitch_from_gallery_body" />
+
+        <tan.examlple.com.javacoban.textviews.TitleTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/defaultMargin"
+            android:text="@string/stitch_image_from_camera"
+            android:textStyle="bold" />
+
+        <tan.examlple.com.javacoban.textviews.BodyTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/defaultMargin"
+            android:text="@string/stitch_image_from_camera_body" />
+
+        <tan.examlple.com.javacoban.textviews.TitleTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/defaultMargin"
+            android:text="@string/photo_storage"
+            android:textStyle="bold" />
+
+        <tan.examlple.com.javacoban.textviews.BodyTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/defaultMargin"
+            android:text="@string/photo_storage_body" />
+
+        <tan.examlple.com.javacoban.textviews.TitleTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/defaultMargin"
+            android:text="@string/for_contribution"
+            android:textStyle="bold" />
+
+        <tan.examlple.com.javacoban.textviews.BodyTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/defaultMargin"
+            android:text="@string/for_contribution_body"/>
+    </LinearLayout>
+</ScrollView>
