@@ -4,7 +4,6 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Environment;
-import android.util.Log;
 
 import com.github.chrisbanes.photoview.PhotoView;
 
@@ -34,7 +33,6 @@ public class BitmapStorageHelper {
     private File getOutputMediaFile() {
         // To be safe, you should check that the SDCard is mounted
         // using Environment.getExternalStorageState() before doing this.
-        Log.d("ac", "getOutputMediaFile: " + Environment.getExternalStorageState());
         File mediaStorageDir = new File(Environment.getExternalStorageDirectory()
                 + "/Android/data/"
                 + "ImageStitcher"

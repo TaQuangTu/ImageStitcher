@@ -6,14 +6,11 @@ import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
-import android.util.Log;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import static android.content.ContentValues.TAG;
 
 public class CameraRequestHelper
 {
@@ -39,7 +36,6 @@ public class CameraRequestHelper
             try {
                 photoFile = createImageFile(activity);
             } catch (IOException ex) {
-                Log.d(TAG, "openCamera: "+ex.getMessage());
                  return null;
             }
             // Continue only if the File was successfully created

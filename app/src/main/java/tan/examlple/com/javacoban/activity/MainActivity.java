@@ -228,18 +228,14 @@ public class MainActivity extends AppCompatActivity implements ImageProcessingLi
             else if (requestCode == REQUEST_TAKE_IMAGE1_FROM_CAMERA || requestCode == REQUEST_TAKE_IMAGE2_FROM_CAMERA) {
                 if (requestCode == REQUEST_TAKE_IMAGE1_FROM_CAMERA) {
                     if (pathOfImage1 != null) {
-                        Log.d("ssss", "onActivityResult: image1 not null");
                         final Bitmap bitmap1 = BitmapFactory.decodeFile(pathOfImage1);
                         horizontalListFragment.addBitmap(bitmap1, 0);
-                        Log.d("ssss", "onActivityResult: image1 added");
                         pathOfImage2 = CameraRequestHelper.openCamera(MainActivity.this, REQUEST_TAKE_IMAGE2_FROM_CAMERA);
                     }
                 } else if (requestCode == REQUEST_TAKE_IMAGE2_FROM_CAMERA) {
                     if (pathOfImage2 != null) {
-                        Log.d("ssss", "onActivityResult: image2 not null");
                         final Bitmap bitmap2 = BitmapFactory.decodeFile(pathOfImage2);
                         horizontalListFragment.addBitmap(bitmap2, 1);
-                        Log.d("ssss", "onActivityResult: image2 added");
                     }
                 }
             }

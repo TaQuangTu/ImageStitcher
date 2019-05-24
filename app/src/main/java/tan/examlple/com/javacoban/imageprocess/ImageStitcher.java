@@ -166,7 +166,7 @@ public class ImageStitcher {
         int minX = 99999999, minY = 9999999;
         int maxX = -1, maxY = -1;
         final int DETAL_Y = 2000, MAX_HEIGHT = 9000;
-        final int DETAL_X = 2000, MAX_WIDTH = 9000;
+        final int DETAL_X = 2000, MAX_WIDTH = 5000;
         //create a bitmap that big enough
         Bitmap res = Bitmap.createBitmap(MAX_WIDTH, MAX_HEIGHT, Bitmap.Config.ARGB_8888);
         //first, copy bitmap1
