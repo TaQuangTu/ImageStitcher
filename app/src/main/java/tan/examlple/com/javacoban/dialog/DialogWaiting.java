@@ -37,6 +37,7 @@ public class DialogWaiting extends Dialog implements PercentageListener {
                 DialogWaiting.this.dismiss();
                 if (getContext() instanceof MainActivity) {
                     ((MainActivity) getContext()).stopMatching();
+
                 }
             }
         });

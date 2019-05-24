@@ -39,6 +39,7 @@ import tan.examlple.com.javacoban.R;
 import tan.examlple.com.javacoban.camera.CameraRequestHelper;
 import tan.examlple.com.javacoban.dialog.DialogWaiting;
 import tan.examlple.com.javacoban.fragment.ImageHorizontalListFragment;
+import tan.examlple.com.javacoban.fragment.ScalingBarFragment;
 import tan.examlple.com.javacoban.imageprocess.ImageProcessThread;
 import tan.examlple.com.javacoban.imageprocess.ImageProcessThread.ImageProcessingListener;
 import tan.examlple.com.javacoban.permission.RuntimePermissionHelper;
@@ -62,6 +63,7 @@ public class MainActivity extends AppCompatActivity implements ImageProcessingLi
     private ConstraintLayout cstResultContainer;
     private LinearLayout lnCameraContainer;
     private ImageHorizontalListFragment horizontalListFragment;
+    private ScalingBarFragment scalingBarFragment;
 
 
     private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
@@ -73,6 +75,7 @@ public class MainActivity extends AppCompatActivity implements ImageProcessingLi
                     processThread = new ImageProcessThread(MainActivity.this);
                     processThread.setDataBeforeRun(horizontalListFragment.getBitmapArray());
                     processThread.setmPercentageListener(dialogWaiting);
+                    processThread.setScaleRatio(scalingBarFragment.getScaleRatio());
                     processThread.execute();
                     Log.i("OpenCV", "OpenCV loaded successfully");
                 }
@@ -104,6 +107,7 @@ public class MainActivity extends AppCompatActivity implements ImageProcessingLi
         lnCameraContainer = findViewById(R.id.lnCameraContainer);
         cstImageContainer = findViewById(R.id.cstImageContainer);
         horizontalListFragment = (ImageHorizontalListFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentImageList);
+        scalingBarFragment = (ScalingBarFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentScaleRatio);
     }
 
     private void setOnClick() {
@@ -183,6 +187,8 @@ public class MainActivity extends AppCompatActivity implements ImageProcessingLi
         imvResult.setImageBitmap(result);
         btnStitch.setVisibility(View.GONE);
         btnBack.setVisibility(View.VISIBLE);
+        //hide seek bar
+        findViewById(R.id.lnSeekBarContainer).setVisibility(View.GONE);
     }
 
     @Override
@@ -310,6 +316,8 @@ public class MainActivity extends AppCompatActivity implements ImageProcessingLi
         lnCameraContainer.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.GONE);
         btnBack.setVisibility(View.GONE);
+        //show seek bar container
+        findViewById(R.id.lnSeekBarContainer).setVisibility(View.VISIBLE);
 
         if (!OpenCVLoader.initDebug()) {
             Log.d("OpenCV", "Internal OpenCV library not found. Using OpenCV Manager for initialization");
@@ -326,6 +334,8 @@ public class MainActivity extends AppCompatActivity implements ImageProcessingLi
         cstResultContainer.setVisibility(View.GONE);
         lnCameraContainer.setVisibility(View.VISIBLE);
         imvCamera.setVisibility(View.VISIBLE);
+        //show seek bar container
+        findViewById(R.id.lnSeekBarContainer).setVisibility(View.VISIBLE);
     }
 
     @Override

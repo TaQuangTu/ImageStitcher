@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorWhite"
+    android:padding="@dimen/defaultPadding">
+
+    <TextView
+        android:id="@+id/tvScaleRatioTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Scale ratio:"
+        android:textColor="@color/color_black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:text="100%"
+        android:id="@+id/tvScaleRatioValue"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:textColor="@color/color_black"
+        app:layout_constraintStart_toEndOf="@+id/tvScaleRatioTitle"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnHelp"
+        android:layout_width="@dimen/height_small_icon"
+        android:layout_height="@dimen/width_small_icon"
+        android:layout_marginLeft="@dimen/defaultMargin"
+        android:background="@android:drawable/ic_menu_help"
+        app:layout_constraintStart_toEndOf="@+id/tvScaleRatioValue"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <SeekBar
+        android:progress="100"
+        android:id="@+id/seekBarScaleRatio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/defaultMargin"
+        android:max="100"
+        android:min="0"
+        app:layout_constraintTop_toBottomOf="@+id/btnHelp" />
+</android.support.constraint.ConstraintLayout>

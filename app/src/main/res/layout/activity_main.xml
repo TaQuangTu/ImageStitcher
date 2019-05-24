@@ -14,13 +14,27 @@
         android:layout_height="match_parent"
         android:visibility="gone" />
 
+    <LinearLayout
+        android:id="@+id/lnSeekBarContainer"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <fragment
+            android:id="@+id/fragmentScaleRatio"
+            android:name="tan.examlple.com.javacoban.fragment.ScalingBarFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+    </LinearLayout>
+
+
     <android.support.constraint.ConstraintLayout
         android:id="@+id/cstImageContainer"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:paddingVertical="@dimen/defaultPadding"
         app:layout_constraintBottom_toTopOf="@id/lnCameraContainer"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/lnSeekBarContainer">
        <fragment
            app:layout_constraintTop_toTopOf="parent"
            app:layout_constraintStart_toStartOf="parent"
@@ -29,22 +43,23 @@
            android:layout_width="match_parent"
            android:layout_height="300dp"></fragment>
     </android.support.constraint.ConstraintLayout>
+
     <LinearLayout
         android:id="@+id/lnCameraContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintTop_toBottomOf="@+id/cstImageContainer"
-        app:layout_constraintBottom_toTopOf="@+id/cstResultContainer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        app:layout_constraintBottom_toTopOf="@+id/cstResultContainer">
         <ImageView
             android:id="@+id/imvCamera"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_camera"
             android:layout_margin="@dimen/defaultMargin"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" />
+            android:layout_width="match_parent"
+            android:layout_height="60dp" />
     </LinearLayout>
+
     <android.support.constraint.ConstraintLayout
         android:id="@+id/cstResultContainer"
         android:layout_width="match_parent"
@@ -72,6 +87,7 @@
         android:id="@+id/btnStitch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/bigMargin"
         android:gravity="center"
         android:text="Stitch"
         app:layout_constraintBottom_toTopOf="@id/btnBack"

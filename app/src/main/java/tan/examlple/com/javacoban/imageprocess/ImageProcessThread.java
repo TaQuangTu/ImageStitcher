@@ -10,6 +10,7 @@ import static tan.examlple.com.javacoban.imageprocess.ImageStitcher.*;
 
 public class ImageProcessThread extends AsyncTask<Void,ImageView,Bitmap> {
 
+
     public interface ImageProcessingListener
     {
         void setUIAfterRun(Bitmap result);
@@ -19,6 +20,7 @@ public class ImageProcessThread extends AsyncTask<Void,ImageView,Bitmap> {
     private ImageProcessingListener imageProcessingListener;
     private ArrayList<Bitmap> bitmapArrayList;
     private PercentageListener mPercentageListener;
+    private double scaleRatio;
 
 
     public void setDataBeforeRun(ArrayList<Bitmap> bitmapArray) {
@@ -37,12 +39,15 @@ public class ImageProcessThread extends AsyncTask<Void,ImageView,Bitmap> {
     protected Bitmap doInBackground(Void... voids) {
         ImageStitcher imageStitcher = getInstance();
         imageStitcher.setPercentageListener(mPercentageListener);
-        //stitch two first bitmap
-        Bitmap result = imageStitcher.stichMultipleBitmap(bitmapArrayList);
+        Bitmap result = imageStitcher.stitchMultipleBitmap(bitmapArrayList,scaleRatio);
         return result;
     }
     @Override
     protected void onPostExecute(Bitmap result) {
         imageProcessingListener.setUIAfterRun(result);
     }
+    public void setScaleRatio(double scaleRatio) {
+        this.scaleRatio = scaleRatio;
+    }
+
 }

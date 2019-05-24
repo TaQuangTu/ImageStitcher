@@ -23,6 +23,8 @@ import tan.examlple.com.javacoban.math.RandomHelper;
 
 public class ImageStitcher {
 
+
+
     //this listener is used to show percentage of stitching processing to class that implements it
     public interface PercentageListener {
         int onPercentageChange(int percentage);
@@ -34,6 +36,7 @@ public class ImageStitcher {
     private FeatureDetector detector;
     private DescriptorMatcher matcher;
     private DescriptorExtractor descriptorExtractor;
+
 
     //private constructor to avoid creating new instance outside this class
     private ImageStitcher() {
@@ -64,16 +67,17 @@ public class ImageStitcher {
         //else, continue using default listener
     }
 
-    /*  private Bitmap getBitmap(ImageView imv) {
+     /* private Bitmap getBitmap(ImageView imv) {
           Bitmap bm = (((BitmapDrawable) imv.getDrawable()).getBitmap()).copy(Bitmap.Config.ARGB_8888, false);
           //TODO: uncomment below line to avoid calculation too long
          //bm = getReduceResolutionBitmap(bm);
           return bm;
-      }
-      private Bitmap getReduceResolutionBitmap(Bitmap bitmap){
-          Bitmap resizedBitmap = Bitmap.createScaledBitmap(bitmap,(int)(bitmap.getWidth()*0.8),(int)(bitmap.getHeight()*0.8),true);
-          return resizedBitmap;
       }*/
+      private Bitmap getScaledBitmap(Bitmap bitmap, double scaleRatio){
+          if(scaleRatio<=0||scaleRatio>=1) return bitmap;
+          Bitmap resizedBitmap = Bitmap.createScaledBitmap(bitmap,(int)(bitmap.getWidth()*scaleRatio),(int)(bitmap.getHeight()*scaleRatio),true);
+          return resizedBitmap;
+      }
     private Mat getMat(Bitmap image) {
         Mat mat = new Mat();
         Utils.bitmapToMat(image, mat);
@@ -82,10 +86,8 @@ public class ImageStitcher {
 
     private Bitmap stitch(Bitmap imv1, Bitmap imv2, int beginPercent, int endPercent) { //two last args are used for listener
 
-        int range = endPercent - beginPercent;
         //step 1: see constructor
         //step 2: read two images to Mat format for next calculation, declare some necessary variables
-
         Mat mat1 = getMat(imv1);
         Mat mat2 = getMat(imv2);
         MatOfKeyPoint matOfKeyPoint1 = new MatOfKeyPoint();
@@ -93,9 +95,7 @@ public class ImageStitcher {
 
         //step 3: detect keypoints for two the images and store the found keypoints to matOfKeypoints
         detector.detect(mat1, matOfKeyPoint1);
-
         detector.detect(mat2, matOfKeyPoint2);
-
 
         //step 4: extract keypoint descriptors and store them to descriptor1,2
         Mat descriptor1 = new Mat();
@@ -142,7 +142,6 @@ public class ImageStitcher {
             Log.d(TAG, "stitch: 2 images have no same point");
             return res; //no match pair found
         }
-        //TODO: swap sceneMat and objMat if result is not as expected
         Mat homography = Calib3d.findHomography(objMat, sceneMat, Calib3d.RANSAC, ransacReprojThreshold);
         if (homography == null || homography.height() < 3 || homography.width() < 3) {
             Log.d(TAG, "stitch: can not stitch the images");
@@ -218,7 +217,13 @@ public class ImageStitcher {
         return res;
     }
 
-    public Bitmap stichMultipleBitmap(ArrayList<Bitmap> bitmaps) {
+    public Bitmap stitchMultipleBitmap(ArrayList<Bitmap> bitmaps, double scaleRatio) {
+
+        //scale all bitmap with scale ratio
+        ArrayList<Bitmap> scaleBitmaps = new ArrayList<>();
+        for(int i=0;i<bitmaps.size();i++){
+            scaleBitmaps.add(getScaledBitmap(bitmaps.get(i),scaleRatio));
+        }
 
         int numBitmaps = bitmaps.size(); //-->we have "numBitmaps - 1" images (exclude the last item cause it is an icon)
         int turn = 0; //turn of stitching
@@ -227,15 +232,15 @@ public class ImageStitcher {
         boolean takenBitmaps[] = new boolean[numBitmaps - 1];
         for (int i = 0; i < takenBitmaps.length; i++) takenBitmaps[i] = false;
 
-        Bitmap res = bitmaps.get(0);
+        Bitmap res = scaleBitmaps.get(0);
         takenBitmaps[0] = true;
 
         int consecutiveUnStitchableTurn = 0;
         while (hasUnStitchedImage(takenBitmaps) == true && consecutiveUnStitchableTurn <= 4) {
             int nextImageIndex = getUnStitchImage(takenBitmaps);
             Log.d(TAG, "stichMultipleBitmap: nextindex" + nextImageIndex);
-            Bitmap temp = imageStitcher.stitch(bitmaps.get(nextImageIndex), res, beginPercent, (turn + 1) * percentOfEachTurn);
-            if (temp != bitmaps.get(nextImageIndex)) {  //stitch success
+            Bitmap temp = imageStitcher.stitch(scaleBitmaps.get(nextImageIndex), res, beginPercent, (turn + 1) * percentOfEachTurn);
+            if (temp != scaleBitmaps.get(nextImageIndex)) {  //stitch success
                 res = temp;
                 takenBitmaps[nextImageIndex] = true;
                 beginPercent = (++turn) * percentOfEachTurn;
